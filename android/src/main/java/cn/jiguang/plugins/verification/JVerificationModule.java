@@ -130,12 +130,17 @@ public class JVerificationModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void dismissLoginAuthActivity(){
-        JVerificationInterface.dismissLoginAuthActivity();
+        reactContext.runOnUiQueueThread(new Runnable() {
+            @Override
+            public void run() {
+                JVerificationInterface.dismissLoginAuthActivity();
+            }
+        });
     }
 
     @ReactMethod
     public void setCustomUIWithConfig(final ReadableMap readableMap, final ReadableArray readableArray){
-        builder = null;        
+        builder = null;
         System.out.println("readableMap>>>:"+readableMap);
         convertToConfig(readableMap);
         reactContext.runOnUiQueueThread(new Runnable() {
@@ -484,7 +489,7 @@ public class JVerificationModule extends ReactContextBaseJavaModule {
         reactView.setLayoutParams(layoutParams);
         return reactView;
     }
-    
+
     private int dp2Pix(float dp) {
         try {
             float density = reactContext.getApplicationContext().getResources().getDisplayMetrics().density;
